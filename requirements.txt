@@ -1,2 +1,4 @@
 pandas
 selenium
+openai
+python-dotenv

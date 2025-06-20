@@ -30,4 +30,4 @@ jobs:
           echo ""=${{ secrets.GMAIL_KEY }}" >> .env
 
       - name: Run script
-        run: craw_mail.py  # 替換成你的程式檔名
+        run: python3 craw_mail.py  # 替換成你的程式檔名

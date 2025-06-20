@@ -44,9 +44,11 @@ def summarize_text(text):
         return "❌ 摘要失敗"
 ### -------- 共用設定 -------- ###
 def init_driver():
-    chrome_version = os.listdir(r"C:\Program Files\Google\Chrome\Application")[0].split('.')[0]
     options = webdriver.ChromeOptions()
-    options.add_experimental_option('excludeSwitches', ['enable-automation'])
+    options.add_experimental_option('excludeSwitches', ['enable-automation']) #隱藏chrome 正受到
+    options.add_argument('--headless')               # 加上這行
+    options.add_argument('--disable-gpu')            # 加上這行
+    options.add_argument('--window-size=1920,1080')  # 加上這行
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     return driver

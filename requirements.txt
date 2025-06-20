@@ -1,5 +1,4 @@
 pandas
 selenium
 openai
-numpy
-pytz
+python-dotenv

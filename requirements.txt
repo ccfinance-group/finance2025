@@ -1,2 +1,5 @@
 pandas
 selenium
+openai
+numpy
+pytz

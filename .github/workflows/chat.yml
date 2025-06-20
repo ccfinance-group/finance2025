@@ -24,10 +24,9 @@ jobs:
       - name: Create .env file
         run: |
           echo "SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}" >> .env
-          echo "GMAIL_KEY"=${{ secrets.GMAIL_KEY }}" >> .env
-          echo "MAIL_TO"=${{ secrets.MAIL_TO }}" >> .env
-          echo "OPENAI_API_KEY"=${{ secrets.OPENAI_API_KEY }}" >> .env
-          echo ""=${{ secrets.GMAIL_KEY }}" >> .env
+          echo "GMAIL_KEY=${{ secrets.GMAIL_KEY }}" >> .env
+          echo "MAIL_TO=${{ secrets.MAIL_TO }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
 
       - name: Run script
         run: craw_mail.py  # 替換成你的程式檔名

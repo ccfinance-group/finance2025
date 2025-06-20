@@ -51,7 +51,7 @@ def init_driver():
     driver.maximize_window()
     return driver
 ### -------- 共用設定查詢間隔 -------- ###
-startday = date.today() - timedelta(days=30)
+startday = date.today() - timedelta(days=10)
 top_keywords = ['銀行股份有限公司', '證券', '期貨', '投信', '保險', '金融控股', '金控', '銀行', '投顧']
 
 ### -------- 爬金管會主網站 -------- ###

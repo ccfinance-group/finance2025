@@ -17,7 +17,7 @@ MAIL_TO = os.getenv('MAIL_TO')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # print(f"寄件者：{SENDER_EMAIL}")
-print(f"收件者：{MAIL_TO}")
+# print(f"收件者：{MAIL_TO}")
 # print(f"gmail金鑰：{GMAIL_KEY[:4]}...(略)")
 # print(f"gpt金鑰：{OPENAI_API_KEY[:4]}...(略)")
 

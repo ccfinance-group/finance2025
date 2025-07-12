@@ -17,7 +17,7 @@ MAIL_TO = os.getenv('MAIL_TO')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # print(f"寄件者：{SENDER_EMAIL}")
-print(f"收件者：{MAIL_TO}")
+# print(f"收件者：{MAIL_TO}")
 # print(f"gmail金鑰：{GMAIL_KEY[:4]}...(略)")
 # print(f"gpt金鑰：{OPENAI_API_KEY[:4]}...(略)")
 
@@ -53,7 +53,7 @@ def init_driver():
     driver.maximize_window()
     return driver
 ### -------- 共用設定查詢間隔 -------- ###
-startday = date.today() - timedelta(days=10)
+startday = date.today() - timedelta(days=1)
 top_keywords = ['銀行股份有限公司', '證券', '期貨', '投信', '保險', '金融控股', '金控', '銀行', '投顧']
 
 ### -------- 爬金管會主網站 -------- ###

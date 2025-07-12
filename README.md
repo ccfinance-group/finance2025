@@ -222,4 +222,3 @@ def send_email(df, title):
     except Exception as e:
         print(f'❌ 郵件發送失敗：{e}')
 ```
-~

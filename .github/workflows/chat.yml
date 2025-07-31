@@ -30,4 +30,8 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
 
       - name: Run script
-        run: python3 craw_mail.py  # the file that you want to run
+        run: |
+          python3 craw_mail.py 
+          fsb_releseday.py # the file that you want to run
+      
+      

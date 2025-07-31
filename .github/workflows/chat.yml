@@ -2,7 +2,7 @@ name: Daily Run
 
 on:
   schedule:
-    - cron: '0 1 * * *'  # 每天的 UTC 時間 01:00 執行（台灣時間早上 9 點）
+    - cron: '0 20 * * *'  # 每天的 UTC 時間 20:00 執行（台灣時間早上 4 點）
   workflow_dispatch:     # allow manual trigger
 
 jobs:

@@ -32,6 +32,6 @@ jobs:
       - name: Run script
         run: |
           python3 craw_mail.py 
-          fsb_releseday.py # the file that you want to run
+          python3 fsb_releseday.py # the file that you want to run
       
       

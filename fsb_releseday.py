@@ -67,7 +67,7 @@ def crawl_main_site(driver):
             href = link.get_attribute('href')
             date_obj = datetime.strptime(date_text, "%Y-%m-%d").date()
             link.click()
-            date_re = driver.find_element('#ap > div.pageview > div > ul > li:nth-child(2) > span').text
+            date_re = driver.find_element('css selector',f'#ap > div.pageview > div > ul > li:nth-child(2) > span').text
             date_re = date_re[-10:]
             date_obj = datetime.strptime(date_text, "%Y-%m-%d").date()
             date_obj_re = datetime.strptime(date_re, "%Y-%m-%d").date()

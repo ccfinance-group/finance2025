@@ -27,11 +27,13 @@ jobs:
           echo "SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}" >> .env
           echo "GMAIL_KEY=${{ secrets.GMAIL_KEY }}" >> .env
           echo "MAIL_TO=${{ secrets.MAIL_TO }}" >> .env
+          echo "RECIPIENT_EMAIL=${{ secrets.MAIL_TO_LAW }}" >> .env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
 
       - name: Run script
         run: |
           python3 craw_mail.py 
+          python3 newrelsealaw.py
           python3 fsb_releseday.py # the file that you want to run
       
       

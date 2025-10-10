@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from selenium import webdriver
 from time import sleep
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date,timezone
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
@@ -48,7 +48,7 @@ def init_driver():
     driver.maximize_window()
     return driver
 ### -------- 共用設定查詢間隔 -------- ###
-startday = date.today() - timedelta(days=1)
+startday =  (datetime.now(timezone(timedelta(hours=8))) - timedelta(days=1)).date()
 top_keywords = ['銀行股份有限公司', '證券', '期貨', '投信', '保險', '金融控股', '金控', '銀行', '投顧']
 
 ### -------- 爬金管會主網站 -------- ###
@@ -228,11 +228,11 @@ def main():
 
     # 主站（重大裁罰）
     df_main = crawl_main_site(driver)
-    send_email(df_main, '金管會重大裁罰_new')
+    send_email(df_main, '金管會重大裁罰_{datetime.now(timezone(timedelta(hours=8))).date()}')
 
     # 三局（非重大裁罰）
     df_sub = crawl_sub_sites(driver)
-    send_email(df_sub, '金管會非重大裁罰_new')
+    send_email(df_sub, '金管會非重大裁罰_{datetime.now(timezone(timedelta(hours=8))).date()}')
 
     driver.quit()
 

@@ -1,4 +1,4 @@
 pandas
 selenium
 openai
-python-dotev
+python-dotenv

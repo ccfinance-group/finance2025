@@ -7,7 +7,7 @@
 * .gitignore：記錄不要push到Github上的檔案
 * craw_mail.py：主要爬蟲程式
 * fsb_relesedat.py:避免上傳日期晚於發佈日無法抓取的情形
-* law.py:新增爬取新發佈法規
+* newreleslaw.py:新增爬取新發佈法規
 * requirements.txt：專案需要使用的套件
 ## 主要爬蟲程式介紹
 1.匯入需要的套件

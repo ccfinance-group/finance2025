@@ -232,11 +232,11 @@ def fetch_selaw(target_date):
 
 
 # ==================== 郵件寄送 ==================== #
-def send_fsa_news(df_list, recipient_email, subject, target_date,unit_list):
+def send_fsa_news(df_list, MAIL_TO_LAW, subject, target_date,unit_list):
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = SENDER_EMAIL
-    msg['To'] = recipient_email
+    msg['To'] = MAIL_TO_LAW
 
     if df_list:
         html_content = f"""

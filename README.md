@@ -6,6 +6,7 @@
 每日寄送郵件
 * .gitignore：記錄不要push到Github上的檔案
 * craw_mail.py：主要爬蟲程式
+* 
 * requirements.txt：專案需要使用的套件
 ## 主要爬蟲程式介紹
 1.匯入需要的套件

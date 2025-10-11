@@ -19,7 +19,7 @@ SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 GMAIL_KEY = os.getenv('GMAIL_KEY')
 MAIL_TO = os.getenv('MAIL_TO')
 # recipient_email = os.getenv('MAIL_TO_LAW')
-RECIPIENT_EMAIL = os.getenv('MAIL_TO_LAW')
+MAIL_TO_LAW = os.getenv('MAIL_TO_LAW')
 
 
 # In[2]:
@@ -295,5 +295,5 @@ if __name__ == "__main__":
     subject='金融相關政府機關法規修訂'
     df_list = [fsc_df, mol_df, cbc_df, ba_df, selaw_df]
     unit_list = ['金管會', '勞動部', '中央銀行', '銀行公會', '證券期貨相關']
-    send_fsa_news(df_list, RECIPIENT_EMAIL, subject, target_date, unit_list)
+    send_fsa_news(df_list, MAIL_TO_LAW, subject, target_date, unit_list)
 

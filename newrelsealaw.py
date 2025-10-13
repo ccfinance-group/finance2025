@@ -15,6 +15,9 @@ import pandas as pd
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+load_dotenv()
+
 SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 GMAIL_KEY = os.getenv('GMAIL_KEY')
 MAIL_TO = os.getenv('MAIL_TO')

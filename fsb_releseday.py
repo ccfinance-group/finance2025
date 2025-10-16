@@ -228,11 +228,11 @@ def main():
 
     # 主站（重大裁罰）
     df_main = crawl_main_site(driver)
-    send_email(df_main, '金管會重大裁罰_{startday}')
+    send_email(df_main, f'金管會重大裁罰_{startday}')
 
     # 三局（非重大裁罰）
     df_sub = crawl_sub_sites(driver)
-    send_email(df_sub, '金管會非重大裁罰_{startday}')
+    send_email(df_sub, f'金管會非重大裁罰_{startday}')
 
     driver.quit()
 

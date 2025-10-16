@@ -244,6 +244,15 @@ def send_fsa_news(df_list, MAIL_TO_LAW, subject, target_date,unit_list):
     if df_list:
         html_content = f"""
         <html>
+        <head>
+            <style>
+                table {{border-collapse: collapse; width: 100%; margin: 20px 0;}}
+                th {{background-color: #1a237e; color: white; padding: 12px; border: 1px solid #ddd;}}
+                td {{border: 1px solid #ddd; padding: 12px; white-space: pre-line;}}
+                tr:nth-child(even) {{background-color: #f2f2f2;}}
+                h3 {{text-align: center; color: #333;}}
+            </style>
+        </head>
         <body>
             <h3>{unit_list[0]}最新公告（{target_date} 後）</h3>
             {df_list[0].to_html(index=False, escape=False)}

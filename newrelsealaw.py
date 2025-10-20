@@ -235,50 +235,41 @@ def fetch_selaw(target_date):
 
 
 # ==================== 郵件寄送 ==================== #
-def send_fsa_news(df_list, MAIL_TO_LAW, subject, target_date,unit_list):
+def send_fsa_news(df_list, MAIL_TO_LAW, subject, target_date, unit_list):
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = SENDER_EMAIL
     msg['To'] = MAIL_TO_LAW
 
-    if df_list:
+    # 檢查是否有任何一個 df 有資料
+    if any(not df.empty for df in df_list):
+        html_parts = []
+        for df, unit in zip(df_list, unit_list):
+            html = f"<h3>{unit}最新公告（{target_date} 後）</h3>"
+            if not df.empty:
+                html += df.to_html(index=False, escape=False)
+            else:
+                html += "<p>本日無新公告</p>"
+            html_parts.append(html)
+
         html_content = f"""
-        <html>
-        <head>
-            <style>
-                table {{border-collapse: collapse; width: 100%; margin: 20px 0;}}
-                th {{background-color: #1a237e; color: white; padding: 12px; border: 1px solid #ddd;}}
-                td {{border: 1px solid #ddd; padding: 12px; white-space: pre-line;}}
-                tr:nth-child(even) {{background-color: #f2f2f2;}}
-                h3 {{text-align: center; color: #333;}}
-            </style>
-        </head>
+        <html><head><style>
+            table {{border-collapse: collapse; width: 100%; margin: 20px 0;}}
+            th {{background-color: #1a237e; color: white; padding: 12px; border: 1px solid #ddd;}}
+            td {{border: 1px solid #ddd; padding: 12px; white-space: pre-line;}}
+            tr:nth-child(even) {{background-color: #f2f2f2;}}
+            h3 {{text-align: center; color: #333;}}
+        </style></head>
         <body>
-            <h3>{unit_list[0]}最新公告（{target_date} 後）</h3>
-            {df_list[0].to_html(index=False, escape=False)}
-
-            <h3>{unit_list[1]}最新公告（{target_date} 後）</h3>
-            {df_list[1].to_html(index=False, escape=False)}
-
-            <h3>{unit_list[2]}最新公告（{target_date} 後）</h3>
-            {df_list[2].to_html(index=False, escape=False)}
-
-            <h3>{unit_list[3]}最新公告（{target_date} 後）</h3>
-            {df_list[3].to_html(index=False, escape=False)}
-
-            <h3>{unit_list[4]}最新公告（{target_date} 後）</h3>
-            {df_list[4].to_html(index=False, escape=False)}
-        </body>
-        </html>
-        """
-    else:
-        html_content = f"""
-        <html><body>
-            <h3 style="text-align:center;color:#333;">本日 {target_date} 無新公告</h3>
+            {''.join(html_parts)}
         </body></html>
         """
-    msg.attach(MIMEText(html_content, 'html', 'utf-8'))
+    else:
+        print(f"📭 {target_date} 無任何新公告，停止寄信。")
+        return  # 👈 不寄信，直接結束
 
+    msg.attach(MIMEText(html_content, 'html', 'utf-8'))
+    
     try:
         smtp_server = smtplib.SMTP('smtp.gmail.com', 587)
         smtp_server.starttls()

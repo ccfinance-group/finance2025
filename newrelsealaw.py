@@ -221,31 +221,73 @@ def fetch_ba(target_date):
 def fetch_selaw(target_date):
     driver = setup_driver(headless=True)
     url = "https://www.selaw.com.tw/Chinese/RegulatoryInformation"
-    driver.get(url)
-    time.sleep(2)
-    rows1 = driver.find_elements(By.CSS_SELECTOR, '#regulatoryInformationDiv > table >tbody >tr')
-    data = []
-    # def parse_roc_date(roc_date_str):
-    #     roc_year, month, day = map(int, roc_date_str.split('.'))
-    #     return datetime(roc_year+1911 , month, day).date()
-    for row in rows1[1:]:
-        try:
-            date_text = row.find_element(By.CSS_SELECTOR, 'td:nth-child(4)').text.strip()
-            law_date = parse_roc_date(date_text)
-            if law_date >= target_date:
-                title_element = row.find_element(By.CSS_SELECTOR, 'td:nth-child(5) > a')
-                title = title_element.text.strip()
-                href = title_element.get_attribute('href')
-                data.append({
-                    "發布日期": law_date.strftime('%Y-%m-%d'),
-                    "標題": title,
-                    "連結": f'<a href="{href}">前往查看</a>'
-                })
-        except Exception as e:
-            print(f"⚠️ 無法解析某列資料：{e}")
 
-    driver.quit()
-    return  pd.DataFrame(data)
+    try:
+        driver.get(url)
+
+        # 等待主容器與表格出現（比 sleep 穩）
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#regulatoryInformationDiv'))
+        )
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '#regulatoryInformationDiv table'))
+        )
+
+        # 等待列節點生成（處理 JS 動態載入）
+        rows1 = WebDriverWait(driver, 20).until(
+            EC.presence_of_all_elements_located(
+                (By.CSS_SELECTOR, '#regulatoryInformationDiv table tbody tr')
+            )
+        )
+
+        data = []
+
+        # 有些時候第一列是表頭，有些不是——不強制略過第一列，改用 try 判斷
+        for idx, row in enumerate(rows1):
+            try:
+                # 第4欄：發布日期（民國年，格式 114.10.30）
+                date_text = row.find_element(By.CSS_SELECTOR, 'td:nth-child(4)').text.strip()
+                law_date = parse_roc_date(date_text)
+
+                if law_date >= target_date:
+                    # 第5欄：標題 (含連結)
+                    title_element = row.find_element(By.CSS_SELECTOR, 'td:nth-child(5) > a')
+                    title = title_element.text.strip()
+                    href = title_element.get_attribute('href')
+
+                    data.append({
+                        "發布日期": law_date.strftime('%Y-%m-%d'),
+                        "標題": title,
+                        "連結": f'<a href="{href}">前往查看</a>'
+                    })
+
+            except Exception as e:
+                # 若該列是表頭或格式不同，略過即可
+                print(f"⚠️ selaw 第 {idx+1} 列解析失敗：{e}")
+
+        if not data:
+            # 方便雲端排程除錯：落檔頁面與截圖
+            try:
+                with open("selaw_page.html", "w", encoding="utf-8") as f:
+                    f.write(driver.page_source)
+                driver.save_screenshot("selaw_error.png")
+            except Exception:
+                pass
+            print("⚠️ selaw 查無符合日期的公告。")
+
+        return pd.DataFrame(data)
+
+    except Exception as e:
+        print(f"⚠️ selaw 載入或解析失敗：{e}")
+        try:
+            with open("selaw_page.html", "w", encoding="utf-8") as f:
+                f.write(driver.page_source)
+            driver.save_screenshot("selaw_error.png")
+        except Exception:
+            pass
+        return pd.DataFrame()
+    finally:
+        driver.quit()
 
 
 # In[10]:

@@ -9,6 +9,8 @@ from os import listdir
 import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime, timedelta,timezone
 import time
 import pandas as pd
@@ -45,14 +47,29 @@ def parse_roc_date(roc_date_str, delimiter='.'):
 
 
 # ==================== Selenium Driver ==================== #
+# ==================== Selenium Driver ==================== #
 def setup_driver(headless=True):
+    # 自動安裝/對應 ChromeDriver（免管版本/路徑）
+    import chromedriver_autoinstaller
+    chromedriver_autoinstaller.install()
+
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-automation'])
+
     if headless:
-        options.add_argument('--headless')
+        # 新版 headless，比舊參數穩
+        options.add_argument('--headless=new')
+    # 雲端常見必要旗標（避免 /dev/shm、GPU、sandbox 問題）
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--window-size=1920,1080')
+    options.add_argument('--disable-blink-features=AutomationControlled')
+
     driver = webdriver.Chrome(options=options)
-    driver.maximize_window()
+    # headless 不需要 maximize_window，反而會在某些環境報錯
     return driver
+
 
 
 # In[5]:

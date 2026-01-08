@@ -1,7 +1,10 @@
 # 誰又被罰了
+
 ## Introduction
 這是一個自動寄送金管會及其所下轄三個局對金融機構進行裁罰資訊的工具
+
 ## repo中各個檔案介紹
+
 * .github/workflows/chat.yml：利用yaml檔控制Github Actions
 每日寄送郵件
 * .gitignore：記錄不要push到Github上的檔案
@@ -9,9 +12,11 @@
 * fsb_relesedat.py:避免上傳日期晚於發佈日無法抓取的情形
 * newreleslaw.py:新增爬取新發佈法規
 * requirements.txt：專案需要使用的套件
+
 ## 主要爬蟲程式介紹
+
 1.匯入需要的套件
-```python=
+```python
 import os
 import pandas as pd
 from selenium import webdriver
@@ -25,8 +30,10 @@ from dotenv import load_dotenv
 load_dotenv()
 from openai import OpenAI
 ```
+
 2.取得寄送郵件及Open AI API的相關環境變數
-```python=
+
+```python
 SENDER_EMAIL = os.getenv('SENDER_EMAIL')
 GMAIL_KEY = os.getenv('GMAIL_KEY')
 MAIL_TO = os.getenv('MAIL_TO')
@@ -50,8 +57,10 @@ def summarize_text(text):
         print(f"⚠️ GPT 摘要錯誤：{e}")
         return "❌ 摘要失敗"
 ```
+
 4.爬蟲的基本設定
-```python=
+
+```python
 ### -------- 共用設定 -------- ###
 def init_driver():
     options = webdriver.ChromeOptions()
@@ -66,8 +75,10 @@ def init_driver():
 startday = date.today() - timedelta(days=1)
 top_keywords = ['銀行股份有限公司', '證券', '期貨', '投信', '保險', '金融控股', '金控', '銀行', '投顧']
 ```
+
 5.分別設定爬蟲的網站
-```python=
+
+```python
 ### -------- 爬金管會主網站 -------- ###
 def crawl_main_site(driver):
     url = 'https://www.fsc.gov.tw/ch/home.jsp?id=131&parentpath=0,2'
@@ -155,8 +166,10 @@ def crawl_sub_sites(driver):
 
     return pd.DataFrame(output) if output else pd.DataFrame()
 ```
+
 6.設定email寄送功能
-```python=
+
+```python
 def send_email(df, title):
     if df.empty:
         print(f"📭 無{title}，已略過寄信")
